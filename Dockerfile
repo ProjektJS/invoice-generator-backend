@@ -20,6 +20,7 @@ RUN apk update && apk add build-base git python
 COPY package* ./
 RUN npm install
 COPY ./src ./src
+COPY ./tsconfig.compile.json ./tsconfig.compile.json
 RUN npm run build
 
 EXPOSE 8081
