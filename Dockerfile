@@ -17,7 +17,7 @@ FROM node:12.13.0-alpine
 
 RUN apk update && apk add build-base git python
 
-COPY package* .
+COPY package* ./
 RUN npm install
 COPY ./src ./src
 RUN npm run build
