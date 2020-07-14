@@ -22,6 +22,7 @@ RUN npm install
 COPY ./src ./src
 COPY ./tsconfig* ./
 RUN npm run build
+COPY ./resources ./resources
 
 EXPOSE 8081
 ENV PORT 8081

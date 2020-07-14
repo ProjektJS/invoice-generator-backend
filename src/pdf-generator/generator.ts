@@ -4,10 +4,10 @@ import * as path from 'path';
 
 const fonts = {
   Roboto: {
-    normal: path.resolve(__dirname, 'fonts', 'Roboto-Regular.ttf'),
-    bold: path.resolve(__dirname, 'fonts', 'Roboto-Medium.ttf'),
-    italics: path.resolve(__dirname, 'fonts', 'Roboto-Italic.ttf'),
-    bolditalics: path.resolve(__dirname, 'fonts', 'Roboto-MediumItalic.ttf')
+    normal: path.resolve(__dirname, '..', '..', 'resources', 'fonts', 'Roboto-Regular.ttf'),
+    bold: path.resolve(__dirname, '..', '..', 'resources', 'fonts', 'Roboto-Medium.ttf'),
+    italics: path.resolve(__dirname, '..', '..', 'resources', 'fonts', 'Roboto-Italic.ttf'),
+    bolditalics: path.resolve(__dirname, '..', '..', 'resources', 'fonts', 'Roboto-MediumItalic.ttf')
   }
 };
 const printer = new PDFPrinter(fonts);
