@@ -1,5 +1,5 @@
 import { Controller, Post, Required, MinLength, BodyParams, ContentType } from '@tsed/common';
-import pdfPrinter from '../../pdf-generator';
+import PDF from '../../pdf-generator';
 
 class BodyParamsModel {
   // @Required()
@@ -11,7 +11,9 @@ class BodyParamsModel {
 export class Invoice {
   @Post()
   @ContentType('application/pdf')
-  async generate(@BodyParams() payload: BodyParamsModel): Promise<string> {
-    return await pdfPrinter();
+  async generate(@BodyParams() payload: BodyParamsModel): Promise<Buffer> {
+    return await new PDF()
+      .data(payload)
+      .generate();
   }
 }
