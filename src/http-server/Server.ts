@@ -15,13 +15,15 @@ export const rootDir = __dirname;
   rootDir,
   acceptMimes: ['application/json'],
   httpPort: process.env.PORT || 8083,
-  httpsPort: false, // CHANGE
+  httpsPort: false,
   mount: {
     '/v1': [
       `${rootDir}/v1/*.ts`
     ]
   },
-
+  converter: {
+    additionalProperties: 'ignore',
+  }
 })
 export class Server {
   @Inject()
