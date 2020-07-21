@@ -14,13 +14,14 @@ const printer = new PDFPrinter(fonts);
 
 export default class Generator {
   constructor(private data: any) {}
-  generate(): Promise<Buffer> {
+
+  generate(): Promise<string> {
     return new Promise((resolve) => {
       this.getBuffer(resolve);
     });
   }
 
-  private getBuffer(resolve: (value: Buffer) => void) {
+  private getBuffer(resolve: (value: string) => void) {
     let result;
     const chunks: any[] = [];
     const doc = printer.createPdfKitDocument({
@@ -34,7 +35,7 @@ export default class Generator {
     });
     doc.on('end', () => {
       result = Buffer.concat(chunks);
-      resolve(result);
+      resolve(result.toString('base64'));
     });
     doc.end();
   }
