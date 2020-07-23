@@ -1,6 +1,10 @@
 import { $log } from '@tsed/common';
 import { PlatformExpress } from '@tsed/platform-express';
 import { Server } from './http-server/Server';
+import * as numeral from 'numeral';
+import 'numeral/locales/pl';
+
+numeral.locale('pl');
 
 async function bootstrap() {
   try {
