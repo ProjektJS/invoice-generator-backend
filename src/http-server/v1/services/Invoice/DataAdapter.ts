@@ -1,6 +1,7 @@
 import { DataModel } from '../../models/Invoice/DataModel';
 import { InvoiceDataInterface } from '../../../../@types/invoice-data.interface';
 import * as numeral from 'numeral';
+import * as moment from 'moment';
 
 export class DataAdapter {
   static adapt(data: DataModel): InvoiceDataInterface {
@@ -11,6 +12,8 @@ export class DataAdapter {
     };
     return {
       ...data,
+      sellDate: moment(data.sellDate).format('YYYY-MM-DD'),
+      createDate: moment(data.createDate).format('YYYY-MM-DD'),
       items: data.items.map((item) => {
         const netto = item.quantity * item.unitPrice;
         const brutto = this.round(netto * (1 + (item.VAT / 100)));

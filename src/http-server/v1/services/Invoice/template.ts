@@ -4,8 +4,70 @@ import { TDocumentDefinitions } from 'pdfmake/interfaces';
 export default function template(data: InvoiceDataInterface): TDocumentDefinitions {
   return {
     content: [
-      { text: 'Faktura VAT', style: 'header' },
-      { text: data.number, style: 'subHeader', margin: [0, 3, 0, 20] },
+      {
+        columns: [
+          {
+            width: '*',
+            stack: [
+              { text: data.seller.name, style: 'sellerName' },
+              { text: data.seller.street, style: 'sellerData' },
+              {
+                text: `${data.seller.postalCode} ${data.seller.city}`,
+                style: 'sellerData',
+              },
+              {
+                text: `NIP: ${data.seller.nip}`,
+                style: 'sellerData',
+              },
+            ],
+          },
+          {
+            width: '30%',
+            stack: [
+              { text: 'Faktura VAT', style: 'invoiceHeader' },
+              {
+                columns: [
+                  {
+                    width: '*',
+                    stack: [
+                      { text: 'Numer:', style: 'invoiceMeta' },
+                      { text: 'Data wystawienia:', style: 'invoiceMeta' },
+                      { text: 'Data sprzedaży:', style: 'invoiceMeta' },
+                    ],
+                  },
+                  {
+                    width: 60,
+                    stack: [
+                      { text: data.number, style: 'invoiceMeta' },
+                      { text: data.createDate, style: 'invoiceMeta' },
+                      { text: data.sellDate, style: 'invoiceMeta' },
+                    ],
+                  }
+                ],
+                columnGap: 2,
+              },
+            ],
+          },
+        ],
+        columnGap: 10,
+        margin: [0, 0, 0, 35],
+      },
+      {
+        stack: [
+          { text: 'Wystawione dla:                                        ', fontSize: 8, decoration: 'underline' },
+          { text: data.client.name, style: 'clientName' },
+          { text: data.client.street, style: 'clientData' },
+          {
+            text: `${data.client.postalCode} ${data.client.city}`,
+            style: 'clientData',
+          },
+          {
+            text: `NIP: ${data.client.nip}`,
+            style: 'clientData',
+          },
+        ],
+        margin: [ 0, 0 , 0, 15],
+      },
       {
         table: {
           headerRows: 1,
@@ -53,15 +115,34 @@ export default function template(data: InvoiceDataInterface): TDocumentDefinitio
       },
     ],
     styles: {
-      header: {
+      invoiceHeader: {
         fontSize: 18,
-        alignment: 'center',
-        bold: true
+        bold: true,
+        alignment: 'right',
+        margin: [0, 0, 0, 5],
       },
-      subHeader: {
-        fontSize: 13,
-        alignment: 'center',
-        italics: true,
+      invoiceMeta: {
+        fontSize: 8,
+        alignment: 'right',
+        margin: [0, 0, 0, 2],
+      },
+      sellerName: {
+        fontSize: 14,
+        bold: true,
+        margin: [0, 0, 0, 5],
+      },
+      sellerData: {
+        fontSize: 10,
+        margin: [0, 0, 0, 2],
+      },
+      clientName: {
+        fontSize: 10,
+        bold: true,
+        margin: [0, 0, 0, 2],
+      },
+      clientData: {
+        fontSize: 8,
+        margin: [0, 0, 0, 2],
       },
       currency: {
         font: 'Monaco',

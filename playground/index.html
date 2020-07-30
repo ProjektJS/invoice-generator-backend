@@ -1,0 +1,81 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body,
+      iframe {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe src=""></iframe>
+    <script>
+      const raw = JSON.stringify({
+        'seller': {
+          'name': 'Foobar z o.o.',
+          'nip': '15423562456',
+          'street': 'Warszawska 15',
+          'city': 'Warszawa',
+          'postalCode': '82-300',
+        },
+        'client': {
+          'name': 'Testtest S.A.',
+          'nip': '15423562456',
+          'street': 'Graska 488',
+          'city': 'Gdańsk',
+          'postalCode': '82-300',
+        },
+        'createPlace': 'Test',
+        'createDate': '2020-07-22',
+        'sellDate': '2020-07-17',
+        'number': 'INV/213/21312',
+        'items': [
+          {
+            'name': 'Test',
+            'quantity': 15,
+            'unitPrice': 15.7,
+            'VAT': 23,
+          },
+          {
+            'name': 'Test',
+            'quantity': 4355,
+            'unitPrice': 3.64,
+            'VAT': 8,
+          },
+          {
+            'name': 'Test',
+            'quantity': 3,
+            'unitPrice': 60,
+            'VAT': 22,
+          },
+        ],
+      });
+
+      const myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+
+      const requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow',
+      };
+
+      fetch('http://localhost:8083/v1/invoice', requestOptions)
+          .then(response => response.text())
+          .then(result => {
+            document.querySelector('iframe').setAttribute('src', `data:application/pdf;base64,${ result }`);
+          })
+          .catch(error => console.log('error', error));
+    </script>
+  </body>
+</html>

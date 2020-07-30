@@ -15,7 +15,7 @@ export class DataModel {
 
   @Required()
   @Format('date')
-  createDate: string;
+  createDate: Date;
 
   @Required()
   number: string;
