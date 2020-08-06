@@ -3,6 +3,17 @@ import { TDocumentDefinitions } from 'pdfmake/interfaces';
 
 export default function template(data: InvoiceDataInterface): TDocumentDefinitions {
   return {
+    footer: (currentPage, pageCount) => ({
+      text: [
+        'Faktura VAT nr. ',
+        { text: data.number, bold: true },
+        ' na kwotę ',
+        { text: data.summary.netto, bold: true },
+        ` PLN \u00B7 Strona ${currentPage.toString()} z ${pageCount}`,
+      ],
+      style: 'invoiceMeta',
+      margin: [ 0, 10, 40, 0 ],
+    }),
     content: [
       {
         columns: [
@@ -112,6 +123,51 @@ export default function template(data: InvoiceDataInterface): TDocumentDefinitio
             ],
           ]
         }
+      },
+      {
+        columns: [
+          { width: '*', text: '' },
+          {
+            width: 'auto',
+            table: {
+              headerRows: 1,
+              widths: ['auto', 'auto', 'auto', 'auto'],
+              body: [
+                [
+                  { stack: [ 'STAWKA', 'VAT' ], style: ['defaultStyle', 'tableHeader'], alignment: 'center' },
+                  { text: 'NETTO', style: ['defaultStyle', 'tableHeader'], alignment: 'center' },
+                  { stack: [ 'WARTOŚĆ', 'PODATKU' ], style: ['defaultStyle', 'tableHeader'], alignment: 'center' },
+                  { text: 'BRUTTO', style: ['defaultStyle', 'tableHeader'], alignment: 'center' },
+                ],
+                ...data.taxes.map((item) => [
+                  { text: `${item.tax}%`, style: 'defaultStyle', alignment: 'right' },
+                  { text: item.netto, style: 'currency' },
+                  { text: item.taxValue, style: 'currency' },
+                  { text: item.brutto, style: 'currency' },
+                ]),
+                [
+                  { text: 'Razem', style: 'defaultStyle', alignment: 'right', fillColor: '#eee', bold: true },
+                  { text: data.summary.netto, style: 'currency', fillColor: '#eee' },
+                  { text: data.summary.tax, style: 'currency', fillColor: '#eee' },
+                  { text: data.summary.brutto, style: 'currency', fillColor: '#eee' },
+                ],
+              ]
+            },
+            margin: [0, 30, 0, 0],
+          }
+        ],
+      },
+      {
+        text: 'Razem do zapłaty',
+        alignment: 'right',
+        margin: [0, 30, 0, 0],
+      },
+      {
+        text: data.summary.brutto,
+        font: 'Monaco',
+        fontSize: 18,
+        fillColor: '#eee',
+        alignment: 'right',
       },
     ],
     styles: {
